@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -153,6 +154,7 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
     <div class="shipping-note">
       ⌛️24小時制計算<br>
       📦 全台寄送<br>
+      ✦ 租借 4 日（含）以上賣貨便免運 ✦
     </div>
     <div class="hero-sub">演唱會・活動・追星攝影專用</div>
     <div class="badges">
@@ -259,6 +261,9 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
       <div>300mm 增距鏡</div>
       <div>含鏡頭配件</div>
     </div>
+  </div>
+  <div class="highlight">📦 <strong>租借 4 日（含）以上</strong>：賣貨便免運</div>
+</div>
 <!-- 長租優惠 -->
 <div class="card">
   <h2>⟡ 長租優惠 ⟡</h2>
@@ -359,6 +364,7 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
   <div class="highlight">
     📍 台南／高雄面交<br>
     📦 全台寄送｜賣貨便<br>
+    ✦ <strong>手機租借 4 日（含）以上免運</strong>
   </div>
 </div>
 <!-- FAQ -->
@@ -389,15 +395,19 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
     <p>手機＋單顆適用鏡頭：8 折。<br>VIVO 手機＋200mm＋400mm：7 折。</p>
   </details>
   <details>
-    <summary>Q7．超過租借時間怎麼計費？</summary>
+    <summary>Q7．租借 4 天以上有免運嗎？</summary>
+    <p>手機租借 4 日（含）以上，使用賣貨便寄送免運。</p>
+  </details>
+  <details>
+    <summary>Q8．超過租借時間怎麼計費？</summary>
     <p>未滿 5 小時，每小時加收 NT$100；滿 5 小時（含）加收 1 日租金。</p>
   </details>
   <details>
-    <summary>Q8．怎麼預約？</summary>
+    <summary>Q9．怎麼預約？</summary>
     <p>請先確認網站上的檔期，再透過 Threads 或 Instagram 私訊詢問。</p>
   </details>
   <details>
-    <summary>Q9．需要提供什麼資料？</summary>
+    <summary>Q10．需要提供什麼資料？</summary>
     <p>① 租借日期<br>② 想租的設備<br>③ 活動／演唱會名稱</p>
   </details>
 </div>
@@ -407,11 +417,11 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
   <div class="contact-row">
     <div class="contact-box">
       Instagram：
-      <a class="contact-link" href="https://www.instagram.com/vivo_x300_u_/" target="_blank" rel="noopener"><strong> @bobo_rent_tw_</strong></a>
+      <a class="contact-link" href="https://www.instagram.com/bobo_rent_tw_/" target="_blank" rel="noopener noreferrer"><strong>@bobo_rent_tw_</strong></a>
     </div>
     <div class="contact-box">
       Threads：
-      <a class="contact-link" href="https://www.threads.com/@bobo_rent_tw_" target="_blank" rel="noopener"><strong>@bobo_rent_tw_</strong></a>
+      <a class="contact-link" href="https://www.threads.com/@bobo_rent_tw_" target="_blank" rel="noopener noreferrer"><strong>@bobo_rent_tw_</strong></a>
     </div>
   </div>
 </div>
@@ -426,6 +436,7 @@ let AVAILABILITY = [];
 let PRICES = {};
 const today = new Date();
 let currentMonth = new Date(today.getFullYear(),today.getMonth(),1);
+
 function normalizeDate(value){
   if(!value)return "";
   const text=String(value).trim();
