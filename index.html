@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -169,19 +168,17 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
     <span class="badge">📱 VIVO × OPPO</span>
     <span class="badge">⌚ Apple Watch</span>
   </div>
-  <div class="version">Website V16｜2026-11-25</div>
+  <div class="version">Website V17｜2026-11-25</div>
 </div>
 </header>
 
 <main class="container">
 
-<!-- 同步狀態 -->
 <div class="card sync-card">
   <h2>📊 檔期</h2>
   <div id="syncStatus" class="sync-status">載入中…</div>
 </div>
 
-<!-- 設備 -->
 <div class="card">
 <h2>📦 租借設備</h2>
 <div class="grid">
@@ -274,7 +271,6 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
 </div>
 </div>
 
-<!-- 價目表 -->
 <div class="card">
 <h2>💰 價目表</h2>
 <div class="price-grid">
@@ -362,7 +358,6 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
 </div>
 </div>
 
-<!-- 長租優惠 -->
 <div class="card">
 <h2>⟡ 長租優惠 ⟡</h2>
 <div class="highlight">
@@ -375,7 +370,6 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
 </p>
 </div>
 
-<!-- 可租借日曆 -->
 <div class="card">
 <h2>🟢 可租借檔期</h2>
 <div class="calendar-description">以下顯示目前可以租借的設備；同類鏡頭會合併顯示數量。</div>
@@ -397,7 +391,6 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
 </div>
 </div>
 
-<!-- 已租出及整理中日曆 -->
 <div class="card">
 <h2>🔴 租出／整理中檔期</h2>
 <div class="calendar-description">以下顯示已經出租或正在整理中的設備。</div>
@@ -420,7 +413,6 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
 </div>
 </div>
 
-<!-- 租金試算 V16 -->
 <div class="card calculator">
 <h2>💰 租金試算</h2>
 
@@ -475,7 +467,6 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
 </div>
 </div>
 
-<!-- 延時規則 -->
 <div class="card">
 <h2>⏰ 租借超時規則</h2>
 <div class="highlight">
@@ -488,7 +479,6 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
 </div>
 </div>
 
-<!-- 寄送 -->
 <div class="card">
 <h2>📦 寄送與面交</h2>
 <div class="highlight">
@@ -497,7 +487,6 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
 </div>
 </div>
 
-<!-- FAQ -->
 <div class="card">
 <h2>❓ 常見問題</h2>
 
@@ -567,7 +556,6 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
 
 </div>
 
-<!-- 聯絡 -->
 <div class="card">
 <h2>📩 聯絡方式</h2>
 <div class="contact-row">
@@ -586,14 +574,10 @@ footer{text-align:center;padding:25px 0 35px;color:#666;font-size:11px}
 
 <footer>
 VIVO X300 ULTRA・VIVO X500 Pro Max・OPPO Find X9 Ultra・Apple Watch 手機租借<br>
-V16｜Google Sheet 即時同步
+V17｜Google Sheet 即時同步
 </footer>
 
 <script>
-/* =========================
-   Google Apps Script API
-========================= */
-
 const API_URL = "https://script.google.com/macros/s/AKfycbxYZWULy9dAHNfcGaA4-T4r83GfzaqdcvuP7fNusVRs5mhWA6tLV09i_pJLSArg8E1V/exec";
 
 let AVAILABILITY = [];
@@ -602,43 +586,22 @@ let PRICES = {};
 const today = new Date();
 let currentMonth = new Date(today.getFullYear(),today.getMonth(),1);
 
-
-/* =========================
-   日期整理
-========================= */
-
 function normalizeDate(value){
   if(!value)return "";
-
   const text=String(value).trim();
   const match=text.match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
-
   if(!match)return "";
-
   return `${match[1]}-${String(match[2]).padStart(2,"0")}-${String(match[3]).padStart(2,"0")}`;
 }
 
-
-/* =========================
-   狀態整理
-========================= */
-
 function normalizeStatus(value){
   if(!value)return "";
-
   const text=String(value).trim();
-
   if(text.includes("可租")||text.includes("可用"))return "可租";
   if(text.includes("已租")||text.includes("出租")||text.includes("租出"))return "已租";
   if(text.includes("整理")||text.includes("清潔"))return "整理中";
-
   return text;
 }
-
-
-/* =========================
-   設備名稱整理
-========================= */
 
 function normalizeEquipment(value){
   if(!value)return "";
@@ -646,17 +609,14 @@ function normalizeEquipment(value){
   const original=String(value).trim();
   const text=original.toLowerCase().replace(/\s+/g,"");
 
-  // Apple Watch
   if(text.includes("applewatch")||text.includes("watch")||text.includes("手錶")){
     return "Apple Watch";
   }
 
-  // OPPO 300mm
   if(text.includes("oppo")&&(text.includes("300")||text.includes("增距鏡"))){
     return "OPPO 300mm";
   }
 
-  // OPPO 手機
   if(
     text.includes("oppo")&&
     (
@@ -666,24 +626,21 @@ function normalizeEquipment(value){
       text.includes("512g")
     )
   ){
-    return "OPPO Find X9 Ultra";
+    return "OPPO";
   }
 
   if(text.includes("日出峽谷")||text.includes("大地苔原")){
-    return "OPPO Find X9 Ultra";
+    return "OPPO";
   }
 
-  // VIVO X500 手機
   if(text.includes("x500")||text.includes("promax")){
     return "X500 Pro Max";
   }
 
-  // 200mm C
   if(text.includes("200")&&(text.includes("c")||text.includes("Ｃ"))){
     return "200mm C";
   }
 
-  // 400mm A / B
   if(text.includes("400")&&(text.includes("a")||text.includes("Ａ"))){
     return "400mm A";
   }
@@ -692,7 +649,6 @@ function normalizeEquipment(value){
     return "400mm B";
   }
 
-  // 200mm A / B
   if(text.includes("200")&&(text.includes("a")||text.includes("Ａ"))){
     return "200mm A";
   }
@@ -701,32 +657,23 @@ function normalizeEquipment(value){
     return "200mm B";
   }
 
-  // 舊版 200mm 資料
   if(text==="200mm"||text==="200"){
     return "200mm A";
   }
 
-  // 400mm
   if(text.includes("400")){
     return "400mm";
   }
 
-  // VIVO 手機顏色
   if(text.includes("曠野綠"))return "曠野綠";
   if(text.includes("火山黑"))return "火山黑";
 
-  // 舊版手機資料
   if(text==="手機"||text.includes("vivo")||text.includes("x300")){
     return "火山黑";
   }
 
   return original;
 }
-
-
-/* =========================
-   讀取 API 資料
-========================= */
 
 function normalizeAvailabilityItem(item){
   if(!item||typeof item!=="object")return null;
@@ -736,25 +683,11 @@ function normalizeAvailabilityItem(item){
   let equipment=item.equipment;
   let status=item.status;
 
-  // 相容舊版 API 資料格式
   if(!equipment&&[
-    "手機",
-    "曠野綠",
-    "火山黑",
-    "OPPO 日出峽谷",
-    "OPPO 大地苔原",
-    "OPPO Find X9 Ultra",
-    "X500 Pro Max",
-    "VIVO X500 Pro Max",
-    "200mm",
-    "200mm A",
-    "200mm B",
-    "200mm C",
-    "400mm",
-    "400mm A",
-    "400mm B",
-    "OPPO 300mm",
-    "Apple Watch"
+    "手機","曠野綠","火山黑","OPPO","OPPO 日出峽谷",
+    "OPPO 大地苔原","OPPO Find X9 Ultra","X500 Pro Max",
+    "VIVO X500 Pro Max","200mm","200mm A","200mm B","200mm C",
+    "400mm","400mm A","400mm B","OPPO 300mm","Apple Watch"
   ].includes(item.status)){
     equipment=item.status;
     status=item.note;
@@ -765,28 +698,13 @@ function normalizeAvailabilityItem(item){
 
   if(!date||!equipment)return null;
 
-  return {
-    date,
-    equipment,
-    status,
-    note:item.note||""
-  };
+  return {date,equipment,status,note:item.note||""};
 }
-
-
-/* =========================
-   價格讀取
-========================= */
 
 function getPrice(key,fallback){
   const value=PRICES[key];
-
-  if(value===undefined||value===null||value===""){
-    return fallback;
-  }
-
+  if(value===undefined||value===null||value==="")return fallback;
   const number=Number(String(value).replace(/[^\d.-]/g,""));
-
   return Number.isFinite(number)?number:fallback;
 }
 
@@ -794,31 +712,19 @@ function money(value){
   return "NT$"+Math.round(value).toLocaleString("en-US");
 }
 
-
-/* =========================
-   更新價目表
-========================= */
-
 function updatePrices(){
-
   const vivoDaily=getPrice("phoneDaily",700);
   const vivo3=getPrice("phoneDaily3Plus",600);
-
   const x500Daily=getPrice("x500PhoneDaily",800);
   const x5003=getPrice("x500PhoneDaily3Plus",700);
-
   const oppoDaily=getPrice("oppoPhoneDaily",800);
   const oppo3=getPrice("oppoPhoneDaily3Plus",700);
-
   const lens200=getPrice("lens200Daily",200);
   const lensSingle=getPrice("lensSingleDaily",300);
-
   const x500Lens=getPrice("x500LensWithPhoneDaily",200);
   const x500LensSingle=getPrice("x500LensSingleDaily",300);
-
   const lens300=getPrice("lens300Daily",200);
   const lens300Single=getPrice("lens300SingleDaily",500);
-
   const watchDaily=getPrice("watchDaily",60);
   const watchWithPhone=getPrice("watchWithPhoneDaily",40);
 
@@ -847,27 +753,16 @@ function updatePrices(){
   document.getElementById("displayWatchWithPhonePrice").textContent=money(watchWithPhone)+"／天";
 }
 
-
-/* =========================
-   載入 Google Sheet
-========================= */
-
 async function loadData(){
-
   const syncStatus=document.getElementById("syncStatus");
-
   syncStatus.className="sync-status";
   syncStatus.textContent="⏳ 同步中…";
 
   try{
-
-    const url=API_URL+"?t="+Date.now()+"&siteVersion=16";
-
+    const url=API_URL+"?t="+Date.now()+"&siteVersion=17";
     const response=await fetch(url,{cache:"no-store"});
 
-    if(!response.ok){
-      throw new Error("HTTP "+response.status);
-    }
+    if(!response.ok)throw new Error("HTTP "+response.status);
 
     const data=await response.json();
 
@@ -875,9 +770,7 @@ async function loadData(){
       throw new Error("API 沒有 availability 資料");
     }
 
-    AVAILABILITY=data.availability
-      .map(normalizeAvailabilityItem)
-      .filter(Boolean);
+    AVAILABILITY=data.availability.map(normalizeAvailabilityItem).filter(Boolean);
 
     if(data.prices&&typeof data.prices==="object"){
       PRICES=data.prices;
@@ -888,97 +781,60 @@ async function loadData(){
     calculatePrice();
 
     syncStatus.textContent="✓ 已同步｜"+AVAILABILITY.length+" 筆";
-
-    console.log("V16 API DATA:",data);
+    console.log("V17 API DATA:",data);
 
   }catch(error){
-
     console.error("API Error:",error);
-
     syncStatus.className="sync-status error";
     syncStatus.textContent="⚠️ 同步失敗，請稍後重新整理";
   }
 }
 
-
-/* =========================
-   切換月份
-========================= */
-
 function changeMonth(offset){
-
   currentMonth=new Date(
     currentMonth.getFullYear(),
     currentMonth.getMonth()+offset,
     1
   );
-
   renderCalendar();
 }
 
-
-/* =========================
-   日曆顯示群組
-========================= */
-
+/* 設備群組：將同類鏡頭合併 */
 function getCalendarGroup(equipment){
-
   const groups={
     "200mm A":"200mm",
     "200mm B":"200mm",
     "200mm C":"200mm",
-    "400mm":"400mm",
     "400mm A":"400mm",
-    "400mm B":"400mm"
+    "400mm B":"400mm",
+    "400mm":"400mm",
+    "OPPO Find X9 Ultra":"OPPO"
   };
 
   return groups[equipment]||equipment;
 }
 
 function getCalendarLabel(group,count){
-
-  if(group==="200mm"){
-    return count>1?"200mm ×"+count:"200mm";
-  }
-
-  if(group==="400mm"){
-    return count>1?"400mm ×"+count:"400mm";
-  }
-
+  if(group==="200mm")return "200mm ×"+count;
+  if(group==="400mm")return "400mm ×"+count;
   return group;
 }
 
-
-/* =========================
-   日曆狀態顏色
-========================= */
-
 function getStatusClass(status){
-
   if(status==="可租")return "status-available";
   if(status==="已租")return "status-rented";
   if(status==="整理中")return "status-cleaning";
-
   return "";
 }
 
 function addStatusLabel(container,text,statusClass){
-
   const item=document.createElement("div");
-
   item.className="day-status "+statusClass;
   item.textContent=text;
-
   container.appendChild(item);
 }
 
-
-/* =========================
-   日曆建立
-========================= */
-
 function createCalendar(calendarId,monthTitleId,statuses){
-
   const calendar=document.getElementById(calendarId);
   const monthTitle=document.getElementById(monthTitleId);
 
@@ -994,35 +850,24 @@ function createCalendar(calendarId,monthTitleId,statuses){
   const firstDay=new Date(year,month,1).getDay();
   const daysInMonth=new Date(year,month+1,0).getDate();
 
-  // 月初空格
   for(let i=0;i<firstDay;i++){
-
     const empty=document.createElement("div");
-
     empty.className="day empty";
-
     calendar.appendChild(empty);
   }
 
-  // 日期
   for(let day=1;day<=daysInMonth;day++){
-
     const cell=document.createElement("div");
-
     cell.className="day";
 
-    const date=
-      `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+    const date=`${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
 
     const dayNumber=document.createElement("div");
-
     dayNumber.className="day-number";
     dayNumber.textContent=day;
-
     cell.appendChild(dayNumber);
 
     const list=document.createElement("div");
-
     list.className="day-list";
 
     const records=AVAILABILITY.filter(item=>
@@ -1032,58 +877,44 @@ function createCalendar(calendarId,monthTitleId,statuses){
     const grouped={};
 
     records.forEach(record=>{
-
       const group=getCalendarGroup(record.equipment);
       const status=record.status;
       const key=group+"_"+status;
 
       if(!grouped[key]){
-        grouped[key]={
-          group,
-          status,
-          count:0
-        };
+        grouped[key]={group,status,count:0};
       }
 
       grouped[key].count++;
     });
 
+    /* 檔期固定顯示順序 */
     const groupOrder=[
       "曠野綠",
       "火山黑",
       "X500 Pro Max",
-      "OPPO Find X9 Ultra",
       "200mm",
       "400mm",
+      "OPPO",
       "OPPO 300mm",
       "Apple Watch"
     ];
 
     const entries=Object.values(grouped).sort((a,b)=>{
-
       const orderA=groupOrder.indexOf(a.group);
       const orderB=groupOrder.indexOf(b.group);
-
       return (orderA===-1?999:orderA)-(orderB===-1?999:orderB);
     });
 
     if(entries.length===0){
-
       const emptyText=document.createElement("div");
-
       emptyText.className="no-record";
       emptyText.textContent="—";
-
       list.appendChild(emptyText);
-
     }else{
-
       entries.forEach(entry=>{
-
         const label=getCalendarLabel(entry.group,entry.count);
-        const statusClass=getStatusClass(entry.status);
-
-        addStatusLabel(list,label,statusClass);
+        addStatusLabel(list,label,getStatusClass(entry.status));
       });
     }
 
@@ -1092,33 +923,13 @@ function createCalendar(calendarId,monthTitleId,statuses){
   }
 }
 
-
-/* =========================
-   更新兩份日曆
-========================= */
-
 function renderCalendar(){
-
-  createCalendar(
-    "availableCalendar",
-    "monthTitleAvailable",
-    ["可租"]
-  );
-
-  createCalendar(
-    "unavailableCalendar",
-    "monthTitleUnavailable",
-    ["已租","整理中"]
-  );
+  createCalendar("availableCalendar","monthTitleAvailable",["可租"]);
+  createCalendar("unavailableCalendar","monthTitleUnavailable",["已租","整理中"]);
 }
 
-
-/* =========================
-   租金試算 V16
-========================= */
-
+/* 租金試算 */
 function calculatePrice(){
-
   const phone=document.getElementById("phoneSelect").value;
   const lens1=document.getElementById("lensSelect").value;
   const lens2=document.getElementById("lensSelect2").value;
@@ -1132,33 +943,23 @@ function calculatePrice(){
   const totalElement=document.getElementById("totalPrice");
   const detailElement=document.getElementById("priceDetail");
 
-  // 手機價格
   const vivoDaily=getPrice("phoneDaily",700);
   const vivo3=getPrice("phoneDaily3Plus",600);
-
   const x500Daily=getPrice("x500PhoneDaily",800);
   const x5003=getPrice("x500PhoneDaily3Plus",700);
-
   const oppoDaily=getPrice("oppoPhoneDaily",800);
   const oppo3=getPrice("oppoPhoneDaily3Plus",700);
 
-  // VIVO 鏡頭價格
   const vivoLensWithPhone=getPrice("lens200Daily",200);
   const vivoLensSingle=getPrice("lensSingleDaily",300);
-
-  // X500 鏡頭價格
   const x500LensWithPhone=getPrice("x500LensWithPhoneDaily",200);
   const x500LensSingle=getPrice("x500LensSingleDaily",300);
-
-  // OPPO 鏡頭價格
   const oppoLensWithPhone=getPrice("lens300Daily",200);
   const oppoLensSingle=getPrice("lens300SingleDaily",500);
 
-  // Apple Watch
   const watchDaily=getPrice("watchDaily",60);
   const watchWithPhone=getPrice("watchWithPhoneDaily",40);
 
-  // 長租優惠
   const longDays=getPrice("longRentalDays",10);
   const singleDiscount=getPrice("longRentalSingleLensDiscount",0.8);
   const bothDiscount=getPrice("longRentalBothLensDiscount",0.7);
@@ -1175,92 +976,66 @@ function calculatePrice(){
     oppo:"OPPO Find X9 Ultra"
   };
 
-  // 未選擇設備
+  const lenses=[lens1,lens2].filter(Boolean);
+
+  function showError(message){
+    totalElement.textContent="無法搭配";
+    detailElement.textContent=message;
+  }
+
   if(!phone&&!lens1&&!lens2&&!watch){
     totalElement.textContent="NT$0";
     detailElement.textContent="請選擇租借設備。";
     return;
   }
 
-  // 第二顆鏡頭不能與第一顆相同
   if(lens1&&lens2&&lens1===lens2){
-    totalElement.textContent="無法搭配";
-    detailElement.textContent="兩顆增距鏡不能選擇相同焦段。";
+    showError("兩顆增距鏡不能選擇相同焦段。");
     return;
   }
 
-  const lenses=[lens1,lens2].filter(Boolean);
-
-  // 不同品牌鏡頭不能混搭
   if(lenses.includes("300")&&lenses.some(lens=>lens==="200"||lens==="400")){
-    totalElement.textContent="無法搭配";
-    detailElement.textContent="OPPO 300mm 不可與 VIVO 增距鏡混搭。";
+    showError("OPPO 300mm 不可與 VIVO 增距鏡混搭。");
     return;
   }
 
-  // VIVO 鏡頭不能搭配 OPPO
-  if(
-    phone==="oppo"&&
-    lenses.some(lens=>lens==="200"||lens==="400")
-  ){
-    totalElement.textContent="無法搭配";
-    detailElement.textContent="VIVO 200mm／400mm 僅適用 VIVO X300 或 X500 Pro Max。";
+  if(phone==="oppo"&&lenses.some(lens=>lens==="200"||lens==="400")){
+    showError("VIVO 200mm／400mm 僅適用 VIVO 手機。");
     return;
   }
 
-  // OPPO 鏡頭只能搭配 OPPO
-  if(
-    phone&&
-    phone!=="oppo"&&
-    lenses.includes("300")
-  ){
-    totalElement.textContent="無法搭配";
-    detailElement.textContent="OPPO 300mm 僅適用 OPPO Find X9 Ultra。";
+  if(phone&&phone!=="oppo"&&lenses.includes("300")){
+    showError("OPPO 300mm 僅適用 OPPO Find X9 Ultra。");
     return;
   }
 
-  // Apple Watch 單租不能同時選其他設備
   if(watch==="single"&&(phone||lenses.length)){
-    totalElement.textContent="無法搭配";
-    detailElement.textContent="Apple Watch 單獨租借時，請勿同時選擇其他設備。";
+    showError("Apple Watch 單獨租借時，請勿同時選擇其他設備。");
     return;
   }
 
-  // Apple Watch 合租必須搭配手機
   if(watch==="withPhone"&&!phone){
-    totalElement.textContent="無法搭配";
-    detailElement.textContent="Apple Watch 合租需要搭配手機。";
+    showError("Apple Watch 合租需要搭配手機。");
     return;
   }
 
   let phoneCost=0;
   let lensCost=0;
   let watchCost=0;
-
   const detail=[];
 
-  // 手機租金
   if(phone){
-
     const rate=phoneRates[phone];
-
     phoneCost=rate*days;
-
-    detail.push(
-      `${phoneNames[phone]}：${days} 天 × ${money(rate)}／天`
-    );
+    detail.push(`${phoneNames[phone]}：${days} 天 × ${money(rate)}／天`);
   }
 
-  // 增距鏡租金
   if(lenses.length){
-
     lenses.forEach(lens=>{
-
       let rate=0;
       let lensName="";
 
       if(lens==="200"||lens==="400"){
-
         lensName=lens+"mm";
 
         if(phone==="vivo"){
@@ -1273,65 +1048,34 @@ function calculatePrice(){
       }
 
       if(lens==="300"){
-
         lensName="OPPO 300mm";
-
-        if(phone==="oppo"){
-          rate=oppoLensWithPhone;
-        }else{
-          rate=oppoLensSingle;
-        }
+        rate=phone==="oppo"?oppoLensWithPhone:oppoLensSingle;
       }
 
       lensCost+=rate*days;
-
       const rentalType=phone?"合租":"單租";
-
-      detail.push(
-        `${lensName} 增距鏡${rentalType}：${days} 天 × ${money(rate)}／天`
-      );
+      detail.push(`${lensName} 增距鏡${rentalType}：${days} 天 × ${money(rate)}／天`);
     });
   }
 
-  // Apple Watch
   if(watch==="withPhone"){
-
     watchCost=watchWithPhone*days;
-
-    detail.push(
-      `Apple Watch 合租：${days} 天 × ${money(watchWithPhone)}／天`
-    );
+    detail.push(`Apple Watch 合租：${days} 天 × ${money(watchWithPhone)}／天`);
   }
 
   if(watch==="single"){
-
     watchCost=watchDaily*days;
-
-    detail.push(
-      `Apple Watch 單租：${days} 天 × ${money(watchDaily)}／天`
-    );
+    detail.push(`Apple Watch 單租：${days} 天 × ${money(watchDaily)}／天`);
   }
 
-  // 原始總金額
   const normalTotal=phoneCost+lensCost+watchCost;
-
   let total=normalTotal;
 
-  // X300＋一顆 VIVO 鏡頭：10 天 8 折
-  if(
-    phone==="vivo"&&
-    lenses.length===1&&
-    days>=longDays
-  ){
-
+  if(phone==="vivo"&&lenses.length===1&&days>=longDays){
     total=normalTotal*singleDiscount;
-
-    detail.push(
-      `${longDays} 天以上長租優惠：${Math.round(singleDiscount*100)} 折`
-    );
+    detail.push(`${longDays} 天以上長租優惠：${Math.round(singleDiscount*100)} 折`);
   }
 
-  // X300＋200mm＋400mm：10 天 7 折
   if(
     phone==="vivo"&&
     lenses.length===2&&
@@ -1339,72 +1083,31 @@ function calculatePrice(){
     lenses.includes("400")&&
     days>=longDays
   ){
-
     total=normalTotal*bothDiscount;
-
-    detail.push(
-      `${longDays} 天以上雙鏡頭優惠：${Math.round(bothDiscount*100)} 折`
-    );
+    detail.push(`${longDays} 天以上雙鏡頭優惠：${Math.round(bothDiscount*100)} 折`);
   }
 
-  // OPPO＋300mm：10 天 8 折
-  if(
-    phone==="oppo"&&
-    lenses.length===1&&
-    lenses.includes("300")&&
-    days>=longDays
-  ){
-
+  if(phone==="oppo"&&lenses.length===1&&lenses.includes("300")&&days>=longDays){
     total=normalTotal*singleDiscount;
-
-    detail.push(
-      `${longDays} 天以上長租優惠：${Math.round(singleDiscount*100)} 折`
-    );
+    detail.push(`${longDays} 天以上長租優惠：${Math.round(singleDiscount*100)} 折`);
   }
-
-  // X500 不適用長租折扣
 
   totalElement.textContent=money(total);
-
   detail.push(`預估總計：${money(total)}`);
-
   detailElement.textContent=detail.join("｜");
 }
 
-
-/* =========================
-   事件監聽
-========================= */
-
-document.getElementById("phoneSelect")
-  .addEventListener("change",calculatePrice);
-
-document.getElementById("lensSelect")
-  .addEventListener("change",calculatePrice);
-
-document.getElementById("lensSelect2")
-  .addEventListener("change",calculatePrice);
-
-document.getElementById("watchSelect")
-  .addEventListener("change",calculatePrice);
-
-document.getElementById("days")
-  .addEventListener("input",calculatePrice);
-
-
-/* =========================
-   初始化
-========================= */
+document.getElementById("phoneSelect").addEventListener("change",calculatePrice);
+document.getElementById("lensSelect").addEventListener("change",calculatePrice);
+document.getElementById("lensSelect2").addEventListener("change",calculatePrice);
+document.getElementById("watchSelect").addEventListener("change",calculatePrice);
+document.getElementById("days").addEventListener("input",calculatePrice);
 
 renderCalendar();
-
 calculatePrice();
-
 loadData();
 
-// 每 5 分鐘自動同步一次
 setInterval(loadData,5*60*1000);
-
 </script>
 </body>
 </html>
